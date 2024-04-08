@@ -3,9 +3,11 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-    <n-message-provider>
-        <RouterView />
-    </n-message-provider>
+    <n-notification-provider>
+        <n-message-provider>
+            <RouterView />
+        </n-message-provider>
+    </n-notification-provider>
 </template>
 
 <style scoped>

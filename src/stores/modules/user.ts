@@ -6,17 +6,17 @@ import { useRoute, useRouter } from 'vue-router';
 export const useUserStore = defineStore('user', () => {
     const route = useRoute();
     const router = useRouter();
-    let isLogin = ref(false);
-    let token = ref<String>('');
-    let userObj = ref({});
-    let permList = ref([]);
+    const isLogin = ref(false);
+    const token = ref<String>('');
+    const userObj = ref({});
+    const permList = ref([]);
 
     // 登录
     async function login(loginObj: any) {
         if (isLogin.value) {
             return;
         }
-        let result = await sysUserApi.login({
+        const result = await sysUserApi.login({
             userName: loginObj.userName.trim(),
             password: loginObj.password.trim(),
         });
@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', () => {
 
     // 获取用户的权限数据
     async function getUserInfo() {
-        let result = await sysUserApi.getUserMenu();
+        const result = await sysUserApi.getUserMenu();
         permList.value = result.data;
     }
 

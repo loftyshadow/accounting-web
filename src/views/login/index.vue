@@ -9,10 +9,10 @@
                     </n-form-item>
                     <n-form-item path="password" label="密码">
                         <n-input v-model:value="loginInfo.password" type="password" show-password-on="mousedown"
-                            placeholder="请输入密码" :maxlength="20" @keydown.enter="login" />
+                            placeholder="请输入密码" :maxlength="20" @keydown.enter="handleSumbit" />
                     </n-form-item>
                 </n-form>
-                <n-button type="primary" @click="login">
+                <n-button type="primary" @click="handleSumbit">
                     登录
                 </n-button>
             </n-card>
@@ -21,10 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import sysUserApi from '@/api/system/sys_user'
+import { useUserStore } from '@/stores/modules/user'
+import { useRouter } from 'vue-router'
 // 使用 bcrypt.js 进行密码加密
 import bcrypt from 'bcryptjs';
 
+const router = useRouter()
+const { login } = useUserStore()
 const notification = useNotification()
 const message = useMessage()
 
@@ -57,29 +60,22 @@ const loginRules: FormRules = {
         }
     ],
 }
-const login = async () => {
-    formRef.value?.validate((errors) => {
-        if (!errors) {
-            notification.create({
-                title: '登录成功',
+const handleSumbit = async () => {
+    await formRef.value?.validate((errors) => {
+        if (errors) {
+            notification.error({
+                title: '用户名或密码格式错误',
                 duration: 2000,
-                closable: true,
+                closable: false,
             })
-        } else {
-            notification.create({
-                title: '用户名或密码错误',
-                duration: 2000,
-                closable: true,
-            })
-            return
         }
     })
     const cost = 10;
     // 前端加密密码
     const hashedPassword = await bcrypt.hash(loginInfo.value.password, cost)
-    sysUserApi.login({
+    login({
         userName: loginInfo.value.userName,
-        passwoed: hashedPassword
+        password: hashedPassword
     })
 }
 

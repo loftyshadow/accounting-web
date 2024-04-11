@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue'
-import sysUserApi from '@/api/system/sys_user.js';
+import sysUserApi from '@/api/system/sys_user';
 import { useRoute, useRouter } from 'vue-router';
 
 export const useUserStore = defineStore('user', () => {
@@ -16,7 +16,7 @@ export const useUserStore = defineStore('user', () => {
         if (isLogin.value) {
             return;
         }
-        const result = await sysUserApi.login({
+        const result: any = await sysUserApi.login({
             userName: loginObj.userName.trim(),
             password: loginObj.password.trim(),
         });
@@ -24,6 +24,7 @@ export const useUserStore = defineStore('user', () => {
             isLogin.value = true;
             token.value = result.data;
             await getUserInfo();
+            router.push('home')
         }
     }
 
@@ -31,12 +32,6 @@ export const useUserStore = defineStore('user', () => {
     function logout(this: any) {
         // 清空pinia存储的数据
         this.$reset();
-
-        // stores.settings.useSettingsStore().$reset();
-
-        // window.localStorage.setItem('user2', 'hello');
-        // window.localStorage.removeItem('user2');
-        // tips: pinia持久化的无法通过这种方式清空数据，只能删除同样方式存储的值 eg: window.localStorage.setItem('user2', 'hello');
         window.localStorage.clear();
         window.sessionStorage.clear();
 

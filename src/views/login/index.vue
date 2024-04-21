@@ -1,6 +1,6 @@
 <template>
-  <div class="relative size-full flex-center overflow-hidden" :style="{ backgroundColor: bgColor }">
-    <n-space vertical>
+  <div class="background-color">
+    <n-space vertical style="width: 160%">
       <n-card title="在线记账" size="huge">
         <n-form ref="formRef" :model="loginInfo" :rules="loginRules">
           <n-form-item path="userName" label="用户名">
@@ -70,7 +70,7 @@ const loginRules: FormRules = {
   ]
 }
 const handleSumbit = async () => {
-  await formRef.value?.validate((errors) => {
+  await formRef.value?.validate((errors: any) => {
     if (errors) {
       notification.error({
         title: '用户名或密码格式错误',
@@ -82,9 +82,28 @@ const handleSumbit = async () => {
   const cost = 10
   // 前端加密密码
   const hashedPassword = await bcrypt.hash(loginInfo.value.password, cost)
-  login({
-    userName: loginInfo.value.userName,
-    password: hashedPassword
-  })
+  // login({
+  //   userName: loginInfo.value.userName,
+  //   password: hashedPassword
+  // })
+  router.push('home')
 }
 </script>
+
+<style lang="scss" scoped>
+.background-color::before {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(135deg, #e66465, #9198e5);
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #fff9;
+}
+</style>

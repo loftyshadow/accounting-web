@@ -86,12 +86,13 @@ const handleSumbit = async () => {
   //   userName: loginInfo.value.userName,
   //   password: hashedPassword
   // })
-  router.push('home')
+  router.push('/today')
 }
 </script>
 
 <style lang="scss" scoped>
 .background-color::before {
+  // 满屏
   position: fixed;
   top: 0;
   left: 0;
